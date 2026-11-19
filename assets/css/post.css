@@ -1,0 +1,20 @@
+/* Styles for rendered post content (blog reader + editor preview) */
+.post-content { font-family: 'Raleway', sans-serif; font-size: 17px; line-height: 1.75; max-width: 70ch; }
+.post-content > * + * { margin-top: 1em; }
+.post-content h1 { font-size: 1.9em; font-weight: 800; line-height: 1.2; margin-top: 1.4em; }
+.post-content h2 { font-size: 1.45em; font-weight: 800; line-height: 1.25; margin-top: 1.4em; }
+.post-content h3 { font-size: 1.15em; font-weight: 700; margin-top: 1.2em; }
+.post-content a { color: var(--accent); }
+.post-content ul, .post-content ol { padding-left: 1.4em; }
+.post-content li + li { margin-top: .3em; }
+.post-content blockquote { border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; color: var(--muted); font-style: italic; }
+.post-content code { font-family: 'JetBrains Mono', monospace; font-size: .85em; background: var(--field-bg); padding: 1px 6px; border-radius: 5px; }
+.post-content pre { font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.6; background: rgba(10, 12, 30, .55); color: #e6e6f0; padding: 16px 18px; border-radius: 10px; overflow-x: auto; white-space: pre; }
+.post-content pre code { background: none; padding: 0; }
+.post-content img, .post-content video { display: block; max-width: 100%; height: auto; border-radius: 10px; margin-left: auto; margin-right: auto; }
+.post-content video { width: 100%; background: #000; }
+.post-content iframe { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: 10px; }
+.post-content .ql-align-center { text-align: center; }
+.post-content .ql-align-right { text-align: right; }
+.post-content .ql-align-justify { text-align: justify; }
+.post-content hr { border: 0; border-top: 1px solid var(--divider); margin: 2em 0; }

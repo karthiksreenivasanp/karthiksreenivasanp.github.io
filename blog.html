@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog · karthiksreenivasanp</title>
+  <meta name="description" content="Blog posts and updates from Karthik Sreenivasan P.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'glass')}catch(e){document.documentElement.setAttribute('data-theme','glass')}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/mac.css">
+  <link rel="stylesheet" href="assets/css/post.css">
+  <style>
+    .desk { padding: 58px 20px 100px; max-width: 1240px; margin: 0 auto; }
+    .notes { height: calc(100vh - 58px - 100px); min-height: 480px; display: flex; flex-direction: column; }
+    .notes .win-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 320px 1fr; }
+
+    /* Sidebar */
+    .side { border-right: 1px solid var(--divider); display: flex; flex-direction: column; min-height: 0; }
+    .side-tools { padding: 14px; display: grid; gap: 10px; border-bottom: 1px solid var(--divider); }
+    .search { width: 100%; padding: 8px 12px 8px 32px; border-radius: 9px; border: 1px solid var(--win-border); background: var(--field-bg); color: var(--text); font: 13.5px 'Raleway', sans-serif; }
+    .search::placeholder { color: var(--faint); }
+    .search-wrap { position: relative; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--faint); }
+    .seg { display: grid; grid-template-columns: repeat(3, 1fr); padding: 3px; border-radius: 9px; background: var(--field-bg); border: 1px solid var(--win-border); }
+    .seg button { border: 0; background: none; padding: 5px 0; border-radius: 7px; cursor: pointer; font: 600 12.5px 'Raleway', sans-serif; color: var(--muted); }
+    .seg button[aria-pressed="true"] { background: var(--win-solid); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+    .list { overflow-y: auto; flex: 1; padding: 6px; }
+    .item { display: block; padding: 12px 12px; border-radius: 10px; text-decoration: none; color: inherit; }
+    .item + .item { margin-top: 2px; }
+    .item:hover { background: var(--row-hover); }
+    .item[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
+    .item[aria-current="page"] .snip, .item[aria-current="page"] .when { color: inherit; opacity: .8; }
+    .item h3 { font-size: 14.5px; font-weight: 700; line-height: 1.3; }
+    .item .when { font-size: 11.5px; color: var(--faint); margin-top: 3px; }
+    .item .snip { font-size: 12.5px; color: var(--muted); margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .list-empty { padding: 30px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+    /* Reader */
+    .reader { overflow-y: auto; min-height: 0; }
+    .reader-inner { max-width: 760px; margin: 0 auto; padding: 36px 40px 60px; }
+    .reader .back { display: none; margin-bottom: 18px; }
+    .reader .cover { width: 100%; max-height: 380px; object-fit: cover; border-radius: 14px; margin-bottom: 26px; display: block; }
+    .reader .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: 13px; }
+    .reader h1.title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; margin: 10px 0 26px; }
+    .reader .share { margin-left: auto; }
+    .full .win-body { grid-template-columns: 1fr; }
+    .full .side { display: none; }
+    .loading { padding: 60px; text-align: center; color: var(--faint); }
+
+    @media (max-width: 760px) {
+      .desk { padding: 46px 8px 76px; }
+      .notes { height: calc(100vh - 46px - 76px); min-height: 0; }
+      .notes .win-body { grid-template-columns: 1fr; }
+      .notes .reader { display: none; }
+      .notes.show-post .side { display: none; }
+      .notes.show-post .reader { display: block; }
+      .reader .back { display: inline-flex; }
+      .reader-inner { padding: 22px 18px 40px; }
+      .post-content { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="menubar" data-brand="index.html#top" data-links="Home|index.html,Blog|blog.html"></header>
+
+  <main class="desk" data-win-host>
+    <div class="win glass notes" data-win="notes" data-title="Blog" data-icon="blog" id="notes">
+      <div class="win-bar"><span class="win-title">Blog &amp; updates</span></div>
+      <div class="win-body">
+        <aside class="side" aria-label="Posts">
+          <div class="side-tools">
+            <label class="search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input class="search" type="search" placeholder="Search posts" aria-label="Search posts" id="q">
+            </label>
+            <div class="seg" role="group" aria-label="Filter">
+              <button aria-pressed="true" data-f="all">All</button>
+              <button aria-pressed="false" data-f="blog">Blogs</button>
+              <button aria-pressed="false" data-f="update">Updates</button>
+            </div>
+          </div>
+          <nav class="list" id="list"></nav>
+        </aside>
+        <article class="reader" id="reader" aria-live="polite"><div class="loading">Loading…</div></article>
+      </div>
+    </div>
+  </main>
+
+  <nav class="dock glass lg-refract" aria-label="Dock">
+    <a class="dock-item" href="index.html" data-icon="home"><span class="tip">Home</span></a>
+    <a class="dock-item" href="#/" data-target="notes" data-icon="blog"><span class="tip">Blog</span></a>
+    <span class="sep social-sep" aria-hidden="true"></span>
+    <a class="dock-item social" href="https://github.com/karthiksreenivasanp" target="_blank" rel="noopener" data-icon="github" aria-label="GitHub"><span class="tip">GitHub</span></a>
+    <a class="dock-item social" href="https://www.linkedin.com/in/karthiksreenivasanp/" target="_blank" rel="noopener" data-icon="linkedin" aria-label="LinkedIn"><span class="tip">LinkedIn</span></a>
+    <a class="dock-item social" href="https://x.com/karthikpsreeni" target="_blank" rel="noopener" data-icon="x" aria-label="X"><span class="tip">X</span></a>
+    <a class="dock-item social" href="https://www.instagram.com/karthiksreenivasanp" target="_blank" rel="noopener" data-icon="instagram" aria-label="Instagram"><span class="tip">Instagram</span></a>
+    <a class="dock-item" href="mailto:karthiksreenivasanp@gmail.com" data-icon="mail" aria-label="Email"><span class="tip">Email</span></a>
+  </nav>
+
+  <script src="vendor/dompurify/purify.min.js"></script>
+  <script src="assets/js/mac.js"></script>
+  <script src="assets/js/blog.js"></script>
+  <script>
+  (async function () {
+    const notes = document.getElementById('notes');
+    const listEl = document.getElementById('list');
+    const reader = document.getElementById('reader');
+    const q = document.getElementById('q');
+    const mobile = () => matchMedia('(max-width: 760px)').matches;
+    let filter = 'all';
+    const posts = await Blog.list();
+
+    const emptyAll = () => `<div class="empty" style="min-height:100%;align-content:center">
+        <div class="icon">${KS.icon('blog')}</div>
+        <h3>Nothing here yet</h3>
+        <p>No posts have been published. Come back later, or head to the home page.</p>
+        <a class="btn primary" href="index.html">Go home</a>
+      </div>`;
+
+    if (!posts.length) {
+      notes.classList.add('full');
+      reader.innerHTML = emptyAll();
+      return;
+    }
+
+    function renderList(current) {
+      const term = q.value.trim().toLowerCase();
+      const shown = posts.filter(p => (filter === 'all' || (p.type || 'blog') === filter) &&
+        (!term || (p.title + ' ' + (p.summary || '')).toLowerCase().includes(term)));
+      listEl.innerHTML = shown.length ? shown.map(p => `
+        <a class="item" href="#/${p.slug}" ${p.slug === current ? 'aria-current="page"' : ''}>
+          <h3>${Blog.esc(p.title)}</h3>
+          <div class="when">${Blog.typeLabel(p.type)} · ${Blog.date(p.date)}</div>
+          <div class="snip">${Blog.esc(p.summary)}</div>
+        </a>`).join('') : `<div class="list-empty">No posts match.</div>`;
+    }
+
+    async function route() {
+      const slug = decodeURIComponent(location.hash.replace(/^#\/?/, ''));
+      let target = slug;
+      if (!slug) {
+        renderList(mobile() ? '' : posts[0].slug);
+        if (mobile()) { notes.classList.remove('show-post'); return; }
+        target = posts[0].slug;
+      } else renderList(slug);
+
+      notes.classList.add('show-post');
+      reader.innerHTML = '<div class="loading">Loading…</div>';
+      reader.scrollTop = 0;
+      const post = await Blog.get(target);
+      if (!post) {
+        reader.innerHTML = `<div class="empty" style="min-height:100%;align-content:center">
+          <div class="icon">${KS.icon('paper')}</div>
+          <h3>This post doesn't exist</h3>
+          <p>It may have been removed, or the link is wrong.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+            <a class="btn" href="#/">Back to blog</a><a class="btn primary" href="index.html">Go home</a></div></div>`;
+        return;
+      }
+      const cover = Blog.safeMedia(post.cover);
+      document.title = `${post.title} · karthiksreenivasanp`;
+      reader.innerHTML = `<div class="reader-inner">
+        <a class="btn small back" href="#/">‹ All posts</a>
+        ${cover ? `<img class="cover" src="${Blog.esc(cover)}" alt="">` : ''}
+        <div class="meta"><span class="chip">${Blog.typeLabel(post.type)}</span><time datetime="${Blog.esc(post.date)}">${Blog.date(post.date, true)}</time>
+          <button class="btn small share" type="button">Copy link</button></div>
+        <h1 class="title">${Blog.esc(post.title)}</h1>
+        <div class="post-content">${Blog.clean(post.html)}</div>
+      </div>`;
+      reader.querySelector('.share').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(location.href); KS.toast('Link copied'); }
+        catch (e) { KS.toast('Copy the address from your browser bar'); }
+      });
+    }
+
+    q.addEventListener('input', () => renderList(decodeURIComponent(location.hash.replace(/^#\/?/, ''))));
+    document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+      filter = b.dataset.f;
+      document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+      renderList(decodeURIComponent(location.hash.replace(/^#\/?/, '')));
+    }));
+    addEventListener('hashchange', route);
+    route();
+  })();
+  </script>
+</body>
+</html>

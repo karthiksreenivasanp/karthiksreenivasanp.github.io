@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /editor.html
 
-Sitemap: https://karthiksreenivasanp.social/sitemap.xml
+Sitemap: https://www.karthiksreenivasanp.social/sitemap.xml

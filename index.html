@@ -1,709 +1,332 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karthiksreenivasanp</title>
+  <meta name="description" content="Karthik Sreenivasan P — AI & Data Science student building offline AI tools and creative software.">
   <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'glass')}catch(e){document.documentElement.setAttribute('data-theme','glass')}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/mac.css">
   <style>
-    :root {
-      --bg: #1a1a2e;
-      --text: #e8e8e8;
-      --win-bg: rgba(26, 26, 46, 0.45);
-      --win-border: rgba(196, 184, 240, 0.2);
-      --bar-bg: rgba(20, 10, 60, 0.3);
-      --accent: #d8ff88;
-    }
-    
-    [data-theme="light"] {
-      --bg: #faf9ff;
-      --text: #1a1a2e;
-      --win-bg: rgba(255, 255, 255, 0.5);
-      --win-border: rgba(196, 184, 240, 0.4);
-      --bar-bg: rgba(212, 199, 255, 0.4);
-      --accent: #3d5cff;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'JetBrains Mono', monospace; 
-      overflow-x: hidden;
-      min-height: 100vh;
-      position: relative;
-      transition: background-color 0.3s, color 0.3s;
-    }
+    main { padding-bottom: 150px; }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: 
-        radial-gradient(circle at 20% 40%, rgba(61, 92, 255, 0.15), transparent 40%),
-        radial-gradient(circle at 80% 60%, rgba(196, 184, 240, 0.15), transparent 40%),
-        radial-gradient(circle at 50% 10%, rgba(216, 255, 136, 0.1), transparent 40%);
-      z-index: -1;
-      filter: blur(60px);
-      animation: meshAnim 15s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-
-    [data-theme="light"] body::before {
-      background: 
-        radial-gradient(circle at 20% 40%, rgba(122, 143, 255, 0.4), transparent 40%),
-        radial-gradient(circle at 80% 60%, rgba(216, 204, 255, 0.4), transparent 40%),
-        radial-gradient(circle at 50% 10%, rgba(229, 255, 208, 0.4), transparent 40%);
-    }
-
-    @keyframes meshAnim {
-      0% { transform: scale(1) translate(0, 0); }
-      100% { transform: scale(1.1) translate(20px, 30px); }
-    }
-
-    ::selection {
-      background: rgba(0, 255, 102, 0.2);
-    }
-    [data-theme="light"] ::selection {
-      background: rgba(0, 122, 255, 0.2);
-    }
-
-    /* Menubar */
-    .menubar {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 16px;
-      background: var(--bar-bg);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border-bottom: 1px solid var(--win-border);
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
-      font-size: 13px;
-      font-weight: 500;
-      font-family: 'Raleway', sans-serif; 
-      user-select: none;
-      color: #aaa;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .menubar .left, .menubar .right {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .menubar .brand {
-      font-weight: 700;
-      cursor: pointer;
-      color: #fff;
-    }
-    [data-theme="light"] .menubar .brand {
-      color: #1a1a1a;
-    }
-    
-    .menubar-item {
-      cursor: pointer;
-      opacity: 0.8;
-      transition: 0.2s;
-    }
-    .menubar-item:hover {
-      opacity: 1;
-      color: var(--accent);
-    }
-    
     /* Hero */
     .hero {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0 20px;
+      max-width: 1120px; margin: 0 auto; min-height: 100vh;
+      padding: 110px 24px 120px;
+      display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 48px;
     }
-    .hero-text-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 10;
-    }
-    
-    .headline {
-      font-family: 'Raleway', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      pointer-events: none;
-      color: #fff;
-    }
-    [data-theme="light"] .headline {
-      color: #1a1a1a;
-    }
-    
-    .subtitle {
-      font-size: 1.1rem;
-      color: #999;
-      margin-top: 15px;
-      max-width: 600px;
-      line-height: 1.5;
-      pointer-events: none;
-      min-height: 50px; 
-    }
-    [data-theme="light"] .subtitle {
-      color: #555;
-    }
-    
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1.1rem;
-      background-color: var(--accent);
-      animation: blink 1s step-end infinite;
-      vertical-align: middle;
-      margin-left: 4px;
-    }
+    .hero h1 { font-size: clamp(2.3rem, 5.6vw, 4.4rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.045em; word-break: break-word; }
+    [data-theme="glass"] .hero h1 { text-shadow: 0 2px 30px rgba(10, 12, 40, .35); }
+    .tagline { margin-top: 18px; max-width: 46ch; min-height: 3.2em; color: var(--muted); font-size: 1.05rem; }
+    .cursor { display: inline-block; width: 9px; height: 1.05em; background: var(--accent); vertical-align: -0.15em; margin-left: 3px; animation: blink 1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
-    
-    /* Windows */
-    .win-wrap {
-      position: absolute;
-      background: var(--win-bg);
-      border: 1px solid var(--win-border);
-      border-radius: 12px;
-      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      z-index: 5;
-      transition: transform 0.2s, background 0.3s, border-color 0.3s;
-    }
-    .win-wrap:hover {
-      z-index: 20;
-    }
-    .win-bar {
-      height: 28px;
-      background: var(--bar-bg);
-      border-bottom: 1px solid var(--win-border);
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      gap: 6px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .win-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-    .win-dot.r { background: #ff5f56; }
-    .win-dot.y { background: #ffbd2e; }
-    .win-dot.g { background: #27c93f; }
-    
-    .win-content {
-      padding: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      background: transparent;
-      color: #d4d4d4;
-      text-align: left;
-    }
-    [data-theme="light"] .win-content {
-      color: #333;
-    }
-    
-    .win-caption {
-      text-align: center;
-      font-size: 11px;
-      color: #555;
-      margin-top: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      position: absolute;
-      bottom: -20px;
-      width: 100%;
-      pointer-events: none;
-    }
-    [data-theme="light"] .win-caption {
-      color: #888;
-    }
-    
-    /* Specific windows */
-    .win-1 { top: 20%; left: 8%; width: 300px; transform: rotate(-3deg); }
-    .win-2 { top: 55%; right: 8%; width: 340px; transform: rotate(2deg); }
-    .win-3 { top: 15%; right: 12%; width: 140px; transform: rotate(5deg); }
-    .win-4 { top: 65%; left: 5%; width: 320px; transform: rotate(-4deg); }
-    
-    .kaomoji {
-      position: absolute;
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.2); 
-      z-index: 1;
-      font-weight: 600;
-      pointer-events: none;
-      font-family: 'Raleway', sans-serif;
-    }
-    [data-theme="light"] .kaomoji {
-      color: rgba(0, 0, 0, 0.2);
-    }
-    .k-1 { top: 70%; left: 18%; transform: rotate(-10deg); }
-    .k-2 { top: 30%; right: 30%; transform: rotate(15deg); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .status { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 12.5px; color: var(--muted); }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #27c93f; box-shadow: 0 0 0 4px rgba(39, 201, 63, .18); }
+    .hint { margin-top: 26px; font-size: 12.5px; color: var(--faint); }
 
-    /* Main Content Sections */
-    .section {
-      padding: 100px 20px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .section-title {
-      font-family: 'Raleway', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 40px;
-      text-align: center;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-    [data-theme="light"] .section-title {
-      color: #1a1a1a;
-    }
-    
-    /* Projects Grid */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-    
-    .project-card {
-      background: var(--win-bg);
-      border: 1px solid var(--win-border);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2);
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-    }
-    .project-card:hover {
-      box-shadow: 0 12px 24px rgba(0,255,102,0.05);
-      border-color: rgba(255,255,255,0.2);
-      transform: translateY(-4px);
-    }
-    [data-theme="light"] .project-card:hover {
-      box-shadow: 0 12px 24px rgba(0,122,255,0.08);
-      border-color: rgba(0,0,0,0.2);
-    }
-    
-    .project-card h3 {
-      font-family: 'Raleway', sans-serif;
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-    .project-card h3 a {
-      color: #fff;
-      text-decoration: none;
-    }
-    [data-theme="light"] .project-card h3 a {
-      color: #1a1a1a;
-    }
-    
-    .project-card p {
-      color: #aaa;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      flex-grow: 1;
-      font-family: 'Raleway', sans-serif;
-    }
-    [data-theme="light"] .project-card p {
-      color: #555;
-    }
-    
-    .tech-stack {
-      font-size: 11.5px;
-      color: var(--accent);
-      background: rgba(216, 255, 136, 0.1);
-      padding: 6px 14px;
-      border-radius: 20px;
-      display: inline-block;
-      width: fit-content;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-    [data-theme="light"] .tech-stack {
-      background: rgba(61, 92, 255, 0.1);
-      color: #3d5cff;
-    }
-    
-    /* Manifesto / About Window */
-    .manifesto-wrap {
-      margin: 0 auto;
-      max-width: 700px;
-      background: var(--win-bg);
-      border: 1px solid var(--win-border);
-      border-radius: 12px;
-      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-      overflow: hidden;
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-    }
-    .manifesto-doc {
-      padding: 40px;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: #ccc;
-    }
-    [data-theme="light"] .manifesto-doc {
-      color: #333;
-    }
-    
-    .manifesto-doc p {
-      margin-bottom: 16px;
-    }
-    .manifesto-doc .highlight {
-      background: rgba(216, 255, 136, 0.2);
-      color: var(--accent);
-      padding: 0 6px;
-      border-radius: 4px;
-    }
-    [data-theme="light"] .manifesto-doc .highlight {
-      background: rgba(61, 92, 255, 0.15);
-      color: #3d5cff;
-    }
-    
-    .connect-links {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 40px;
-      padding-bottom: 80px;
-      flex-wrap: wrap;
-      font-family: 'Raleway', sans-serif;
-    }
-    .connect-links a {
-      color: #aaa;
-      text-decoration: none;
-      font-weight: 500;
-      border: 1px solid var(--win-border);
-      padding: 8px 16px;
-      border-radius: 20px;
-      transition: 0.2s;
-      background: var(--win-bg);
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-    }
-    [data-theme="light"] .connect-links a {
-      color: #555;
-    }
-    .connect-links a:hover {
-      background: #333;
-      color: #fff;
-      transform: translateY(-2px);
-      border-color: #555;
-    }
-    [data-theme="light"] .connect-links a:hover {
-      background: #fff;
-      color: #1a1a1a;
-      border-color: #aaa;
-    }
+    .stack { position: relative; height: 450px; }
+    .stack .win { position: absolute; transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg)); }
+    .w-code { top: 0; left: 0; width: 330px; --rot: -2deg; z-index: 2; }
+    .w-avatar { top: 30px; right: 0; width: 190px; --rot: 3deg; z-index: 3; }
+    .w-avatar img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .w-term { bottom: 0; left: 40px; width: 360px; --rot: 1deg; z-index: 1; }
+    pre.code { padding: 16px 18px; font-size: 13px; line-height: 1.6; color: #9cdcfe; overflow-x: auto; }
+    [data-theme="light"] pre.code { color: #0b5394; }
+    .c-cls { color: #4ec9b0; } .c-str { color: #ffb38a; } .c-kw { color: #6fb6ff; } .c-fn { color: #f2e6a0; } .c-ret { color: #e59cf0; }
+    [data-theme="light"] .c-cls { color: #1a7f6e; } [data-theme="light"] .c-str { color: #a3411f; }
+    [data-theme="light"] .c-kw { color: #2f55d4; } [data-theme="light"] .c-fn { color: #795e26; } [data-theme="light"] .c-ret { color: #9b2f9b; }
+    .term { padding: 14px 18px; font-size: 13px; }
+    .term .p { color: var(--accent); } .term .o { color: var(--muted); }
 
-    .github-snake {
-      width: 100%;
-      display: block;
-      filter: invert(1) hue-rotate(180deg) brightness(1.2); 
-    }
-    [data-theme="light"] .github-snake {
-      filter: none;
-    }
-    
-    /* Responsive styling for Mobile */
-    @media (max-width: 768px) {
-      .headline { font-size: 2.4rem; word-break: break-word; padding: 0 10px; }
-      .kaomoji { display: none; }
-      
-      .hero {
-        height: auto;
-        min-height: 100vh;
-        padding-top: 100px;
-        padding-bottom: 40px;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-      }
-      
-      .hero-text-content {
-        order: -1;
-      }
-      
-      .win-wrap {
-        position: relative !important;
-        top: auto !important; left: auto !important; right: auto !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 320px;
-        margin: 0 auto;
-      }
-      
-      .menubar {
-        padding: 6px 12px;
-      }
-      .menubar .left, .menubar .right {
-        gap: 10px;
-      }
+    /* About */
+    .about { display: grid; grid-template-columns: 1.6fr 1fr; }
+    .about .doc { padding: 32px 36px; font-size: 15.5px; line-height: 1.75; max-width: 64ch; }
+    .about .doc p + p { margin-top: 14px; }
+    .hl { background: var(--accent-soft); color: var(--accent); padding: 0 6px; border-radius: 4px; }
+    .info { border-left: 1px solid var(--divider); padding: 28px; font-size: 13.5px; }
+    .info h3 { font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
+    .info dl { display: grid; gap: 14px; }
+    .info dt { color: var(--muted); font-size: 12px; }
+
+    /* Projects */
+    .finder-path { padding: 10px 16px; font-size: 12.5px; color: var(--muted); border-bottom: 1px solid var(--divider); }
+    .finder-head, .finder-row { display: grid; grid-template-columns: minmax(180px, 1.1fr) 2fr minmax(170px, 1.1fr); gap: 20px; padding: 0 20px; }
+    .finder-head { font-size: 12px; color: var(--muted); padding-top: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--divider); }
+    .finder-row { padding-top: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--divider); transition: background .15s; }
+    .finder-row:last-child { border-bottom: 0; }
+    .finder-row:hover { background: var(--row-hover); }
+    .finder-row .name { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px; font: 700 16px 'Raleway', sans-serif; align-self: start; }
+    .finder-row .name:hover { color: var(--accent); }
+    .finder-row .name svg { flex: none; color: var(--accent); width: 18px; height: 18px; }
+    .finder-row .desc { color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; align-content: start; }
+    .finder-row .links { grid-column: 2 / -1; display: flex; gap: 18px; font-size: 13px; margin-top: -6px; }
+    .finder-row .links a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .finder-row .links a:hover { text-decoration: underline; }
+    .activity { margin-top: 24px; }
+    .activity img { display: block; width: 100%; padding: 12px; filter: invert(1) hue-rotate(180deg) brightness(1.2); }
+    [data-theme="light"] .activity img { filter: none; }
+
+    /* Paper */
+    .paper { display: grid; grid-template-columns: 1fr 1.15fr; }
+    .paper .shot { border-right: 1px solid var(--divider); max-height: 420px; overflow: hidden; }
+    .paper .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .paper .body { padding: 32px 36px; display: flex; flex-direction: column; gap: 14px; }
+    .paper .venue { color: var(--muted); font-size: 13px; }
+    .paper h3 { font-size: clamp(1.3rem, 2.4vw, 1.65rem); font-weight: 800; line-height: 1.2; }
+    .paper .authors { font-size: 13.5px; color: var(--muted); }
+    .paper .authors b { color: var(--text); }
+    .paper .btn { align-self: flex-start; margin-top: 6px; }
+
+    /* Blog preview */
+    .post-row { display: grid; grid-template-columns: 92px 1fr auto; gap: 18px; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--divider); text-decoration: none; color: inherit; }
+    .post-row:hover { background: var(--row-hover); }
+    .post-row .thumb { width: 92px; height: 64px; border-radius: 8px; object-fit: cover; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent); }
+    .post-row .thumb svg { width: 26px; height: 26px; }
+    .post-row h3 { font-size: 1.05rem; font-weight: 700; }
+    .post-row p { color: var(--muted); font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .post-row .meta { font-size: 12px; color: var(--faint); text-align: right; white-space: nowrap; }
+    .blog-foot { display: flex; justify-content: flex-end; padding: 14px 20px; }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact h2 { font-size: clamp(1.7rem, 3.5vw, 2.2rem); font-weight: 800; }
+    .contact p { color: var(--muted); margin: 8px auto 22px; max-width: 48ch; }
+    .contact .mail { font-size: clamp(1rem, 2.6vw, 1.35rem); font-weight: 700; color: var(--accent); text-decoration: none; border-bottom: 2px solid var(--accent-soft); word-break: break-all; }
+    .socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .contact .coffee { display: inline-block; margin-top: 24px; }
+    .contact .coffee img { height: 42px; border-radius: 8px; }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 100px; padding-bottom: 40px; gap: 40px; }
+      .stack { height: auto; display: grid; gap: 16px; justify-items: center; }
+      .stack .win { position: relative; inset: auto; --rot: 0deg !important; width: 100%; max-width: 380px; }
+      .stack .w-avatar { max-width: 200px; order: -1; }
+      .about, .paper { grid-template-columns: 1fr; }
+      .info { border-left: 0; border-top: 1px solid var(--divider); }
+      .paper .shot { border-right: 0; border-bottom: 1px solid var(--divider); max-height: 260px; }
+      .finder-head { display: none; }
+      .finder-row { grid-template-columns: 1fr; gap: 6px; }
+      .finder-row .links { grid-column: auto; margin-top: 4px; }
+      .about .doc, .paper .body { padding: 24px; }
+      .post-row { grid-template-columns: 72px 1fr; }
+      .post-row .thumb { width: 72px; height: 56px; }
+      .post-row .meta { grid-column: 2; text-align: left; order: -1; }
+      .hint { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Menubar -->
-  <header class="menubar">
-    <div class="left">
-      <span class="apple-logo" style="font-size: 16px; margin-right: 8px;"></span>
-      <span class="brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><b>kspace</b><span style="font-size: 1.3em; line-height: 1;">.</span></span>
-      <span class="menubar-item" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">Projects</span>
-      <span class="menubar-item" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">About</span>
-    </div>
-    <div class="right" style="gap: 12px;">
-      <!-- Theme Toggle -->
-      <svg id="theme-toggle" class="menubar-item" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;" title="Toggle Theme">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-      <!-- macOS icons -->
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line></svg>
-      <span class="menubar-item" id="clock">12:00 PM</span>
-    </div>
-  </header>
+  <header class="menubar" data-brand="#top" data-links="About|#about,Projects|#projects,Paper|#paper,Blog|blog.html,Contact|#contact"></header>
 
-  <!-- Hero -->
-  <section class="hero">
-    
-    <!-- Floaters -->
-    <div class="kaomoji k-1">^ ω ^</div>
-    <div class="kaomoji k-2">(¬_¬)</div>
-    
-    <div class="win-wrap win-1">
-      <div class="win-bar">
-        <div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <div class="status">B.Tech, AI &amp; Data Science</div>
+        <h1>karthik&shy;sreenivasanp</h1>
+        <p class="tagline"><span id="type-target"></span><span class="cursor" aria-hidden="true"></span></p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">See my projects</a>
+          <a class="btn" href="blog.html">Read the blog</a>
+          <a class="btn" href="mailto:karthiksreenivasanp@gmail.com">Email me</a>
+        </div>
+        <p class="hint">Every window here works. Drag them, minimize them into the Dock, or zoom.</p>
       </div>
-      <div class="win-content">
-<pre style="color: #9cdcfe; line-height: 1.5;">class <span style="color: #4ec9b0;">karthik</span>:
-  role = <span style="color: #ce9178;">"think.eat.code"</span>
-  
-  <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">build</span>(self):
-    <span style="color: #c586c0;">return</span> <span style="color: #ce9178;">"food -> code"</span></pre>
-      </div>
-      <div class="win-caption">me.py</div>
-    </div>
-    
-    <div class="win-wrap win-2">
-      <div class="win-bar">
-        <div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>
-      </div>
-      <div class="win-content" style="padding: 0;">
-        <img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="GitHub Snake" class="github-snake">
-      </div>
-      <div class="win-caption">github_activity.svg</div>
-    </div>
 
-    <div class="win-wrap win-3">
-      <div class="win-bar">
-        <div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>
-      </div>
-      <div class="win-content" style="padding: 0; display:flex; justify-content:center; align-items:center; height: 140px;">
-        <img src="other_image.jpeg" alt="Profile" style="width: 140px; height: 140px; object-fit: cover;">
-      </div>
-      <div class="win-caption">avatar.jpeg</div>
-    </div>
+      <div class="stack">
+        <div class="win glass lg-refract draggable w-code" data-win="me" data-title="me.py" data-icon="code">
+          <div class="win-bar"><span class="win-title">me.py</span></div>
+<pre class="code win-body">class <span class="c-cls">karthik</span>:
+  role = <span class="c-str">"think.eat.code"</span>
 
-    <div class="win-wrap win-4">
-      <div class="win-bar">
-        <div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>
-      </div>
-      <div class="win-content" style="padding: 0;">
-        <img src="ieee_screenshot.png" alt="IEEE Publication" style="width: 100%; display: block; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-      </div>
-      <div class="win-caption">achievement.png</div>
-    </div>
+  <span class="c-kw">def</span> <span class="c-fn">build</span>(self):
+    <span class="c-ret">return</span> <span class="c-str">"food -&gt; code"</span></pre>
+        </div>
 
-    <!-- Grouped Text Content for Mobile Stacking -->
-    <div class="hero-text-content">
-      <h1 class="headline">karthiksreenivasanp</h1>
-      <div class="subtitle"><span id="type-target"></span><span class="cursor"></span></div>
-      
-      <div style="margin-top: 30px; z-index: 10;">
-        <a href="https://buymeacoffee.com/karthiksreenivasanp" target="_blank" style="text-decoration:none;">
-          <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="42" alt="Buy Me A Coffee" style="border-radius: 8px; transition: transform 0.2s; filter: grayscale(20%) contrast(1.1);">
+        <div class="win glass lg-refract draggable w-avatar" data-win="avatar" data-title="avatar.jpeg" data-icon="image">
+          <div class="win-bar"></div>
+          <img class="win-body" src="other_image.jpeg" alt="Karthik">
+        </div>
+
+        <div class="win glass lg-refract draggable w-term" data-win="zsh" data-title="Terminal" data-icon="terminal">
+          <div class="win-bar"><span class="win-title">zsh</span></div>
+          <div class="term win-body">
+            <div><span class="p">~ $</span> whoami</div>
+            <div class="o">karthik — builds offline ai &amp; terminal tools</div>
+            <div><span class="p">~ $</span> ls ~/projects | wc -l</div>
+            <div class="o">3</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about" data-win-host>
+      <div class="section-head"><h2>About</h2></div>
+      <div class="win glass" data-win="about" data-title="About" data-icon="about">
+        <div class="win-bar"><span class="win-title">notes.txt</span></div>
+        <div class="about win-body">
+          <div class="doc">
+            <p>hey there, i'm karthik! ^ ω ^</p>
+            <p>i'm pursuing a B.Tech in AI &amp; Data Science, and i love building <span class="hl">offline ai systems</span>, exploring machine learning, and crafting terminal-based workflows.</p>
+            <p>i believe in open source, linux, and turning random ideas into useful software. when i'm not coding, i'm probably tinkering with a new tool or reading about language models.</p>
+            <p>feel free to poke around my work or drop me an email.</p>
+          </div>
+          <aside class="info">
+            <h3>Get info</h3>
+            <dl>
+              <div><dt>Studying</dt><dd>B.Tech, AI &amp; Data Science</dd></div>
+              <div><dt>Into</dt><dd>Local LLMs, speech ML, Linux, CLIs</dd></div>
+              <div><dt>Published</dt><dd>IEEE conference paper, 2026</dd></div>
+              <div><dt>Usually found</dt><dd>in a terminal</dd></div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects" data-win-host>
+      <div class="section-head">
+        <h2>Stuff i built</h2>
+        <p>The three i'm proudest of.</p>
+      </div>
+      <div class="win glass" data-win="projects" data-title="Projects" data-icon="projects">
+        <div class="win-bar"><span class="win-title">projects</span></div>
+        <div class="win-body">
+          <div class="finder-path">~/karthik/projects</div>
+          <div class="finder-head"><span>Name</span><span>What it does</span><span>Built with</span></div>
+
+          <div class="finder-row">
+            <a class="name" href="https://karthiksreenivasanp.github.io/martian-map/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Martian Map</a>
+            <span class="desc">Turn-by-turn walk planner and 3D HUD for astronauts on Mars, built on real NASA orbital data. Made for NASA Space Apps Challenge 2026.</span>
+            <span class="chips"><span class="chip">Three.js</span><span class="chip">Leaflet</span><span class="chip">Vite</span><span class="chip">NASA data</span></span>
+            <span class="links"><a href="https://karthiksreenivasanp.github.io/martian-map/" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/karthiksreenivasanp/martian-map" target="_blank" rel="noopener">Code</a></span>
+          </div>
+          <div class="finder-row">
+            <a class="name" href="https://github.com/karthiksreenivasanp/speaker-based-attendance" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Speaker Based Attendance</a>
+            <span class="desc">Students mark attendance by voice inside a 20 m geofence. Fine-tuned ECAPA-TDNN, over 96% verification accuracy. Published at IEEE.</span>
+            <span class="chips"><span class="chip">PyTorch</span><span class="chip">SpeechBrain</span><span class="chip">FastAPI</span><span class="chip">Firebase</span></span>
+            <span class="links"><a href="https://github.com/karthiksreenivasanp/speaker-based-attendance" target="_blank" rel="noopener">Code</a></span>
+          </div>
+          <div class="finder-row">
+            <a class="name" href="https://github.com/karthiksreenivasanp/homo-lang" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>HOMO Language</a>
+            <span class="desc">A plain-English programming language for beginners, with built-in machine learning and a compiler that fixes your typos using a local AI.</span>
+            <span class="chips"><span class="chip">Python</span><span class="chip">Interpreter</span><span class="chip">scikit-learn</span><span class="chip">Local LLM</span></span>
+            <span class="links"><a href="https://github.com/karthiksreenivasanp/homo-lang" target="_blank" rel="noopener">Code</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div data-win-host>
+        <div class="win glass activity" data-win="activity" data-title="GitHub activity" data-icon="activity">
+          <div class="win-bar"><span class="win-title">github_activity.svg</span></div>
+          <img class="win-body" src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="My GitHub contribution graph, animated as a snake" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- Paper -->
+    <section class="section" id="paper" data-win-host>
+      <div class="section-head"><h2>Published</h2></div>
+      <div class="win glass" data-win="paper" data-title="Paper" data-icon="paper">
+        <div class="win-bar"><span class="win-title">paper.pdf</span></div>
+        <div class="paper win-body">
+          <div class="shot"><img src="ieee_screenshot.png" alt="The paper's page on IEEE Xplore" loading="lazy"></div>
+          <div class="body">
+            <span class="venue">IEEE · 2026 International Conference</span>
+            <h3>Geofenced Voice Biometric Attendance: A Secure Approach for Classroom Management</h3>
+            <p class="authors"><b>Karthik Sreenivasan P</b>, Sreelakshmi T.S, Hema P Menon, Vismaya C.V, S.P Subramanian</p>
+            <p>Students mark attendance with their voice. Deep-learning speaker recognition confirms who they are, and geolocation confirms they're actually in class.</p>
+            <a class="btn" href="https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Geofenced%20Voice%20Biometric%20Attendance" target="_blank" rel="noopener">Read on IEEE Xplore</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog preview -->
+    <section class="section" id="blog" data-win-host>
+      <div class="section-head">
+        <h2>Blog &amp; updates</h2>
+        <p>Notes on what i'm building and learning.</p>
+      </div>
+      <div class="win glass" data-win="blog" data-title="Blog" data-icon="blog">
+        <div class="win-bar"><span class="win-title">~/blog</span></div>
+        <div class="win-body" id="blog-preview" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact">
+      <h2>Say hi</h2>
+      <p>Questions about a project, a collaboration idea, or just want to talk local LLMs? Email works best.</p>
+      <a class="mail" href="mailto:karthiksreenivasanp@gmail.com">karthiksreenivasanp@gmail.com</a>
+      <div class="socials">
+        <a class="btn small" href="https://github.com/karthiksreenivasanp" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn small" href="https://www.linkedin.com/in/karthiksreenivasanp/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn small" href="https://x.com/karthikpsreeni" target="_blank" rel="noopener">X</a>
+        <a class="btn small" href="https://www.instagram.com/karthiksreenivasanp" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div>
+        <a class="coffee" href="https://buymeacoffee.com/karthiksreenivasanp" target="_blank" rel="noopener">
+          <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy me a coffee">
         </a>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Projects -->
-  <section class="section" id="projects">
-    <h2 class="section-title">stuff i built</h2>
-    <div class="projects-grid">
-      
-      <div class="project-card">
-        <h3><a href="https://github.com/karthiksreenivasanp/Grammer-AI" target="_blank">Grammer AI</a></h3>
-        <p>Offline CLI that rewrites text locally using LLMs.</p>
-        <div class="tech-stack">Python • Qwen • llama-cpp</div>
-      </div>
-      
-      <div class="project-card">
-        <h3><a href="https://github.com/karthiksreenivasanp/LitLoom" target="_blank">LitLoom</a></h3>
-        <p>Desktop app for poetry writing and exports.</p>
-        <div class="tech-stack">Python • Tkinter • ReportLab</div>
-      </div>
-      
-      <div class="project-card">
-        <h3><a href="https://github.com/karthiksreenivasanp/speaker-based-attendance" target="_blank">Speaker Based Attendance</a></h3>
-        <p>AI-powered voice biometric attendance with GPS geofencing.</p>
-        <div class="tech-stack">FastAPI • Firebase • SpeechBrain</div>
-      </div>
-      
-      <div class="project-card">
-        <h3><a href="https://github.com/karthiksreenivasanp/homo-lang" target="_blank">HOMO Language</a></h3>
-        <p>A beginner-friendly programming language built from scratch in Python.</p>
-        <div class="tech-stack">Python • Compiler Design</div>
-      </div>
-      
-    </div>
-  </section>
+  <nav class="dock glass lg-refract" aria-label="Dock">
+    <a class="dock-item" href="#about" data-target="about" data-icon="about"><span class="tip">About</span></a>
+    <a class="dock-item" href="#projects" data-target="projects" data-icon="projects"><span class="tip">Projects</span></a>
+    <a class="dock-item" href="#paper" data-target="paper" data-icon="paper"><span class="tip">Paper</span></a>
+    <a class="dock-item" href="blog.html" data-target="blog" data-icon="blog"><span class="tip">Blog</span></a>
+    <span class="sep social-sep" aria-hidden="true"></span>
+    <a class="dock-item social" href="https://github.com/karthiksreenivasanp" target="_blank" rel="noopener" data-icon="github" aria-label="GitHub"><span class="tip">GitHub</span></a>
+    <a class="dock-item social" href="https://www.linkedin.com/in/karthiksreenivasanp/" target="_blank" rel="noopener" data-icon="linkedin" aria-label="LinkedIn"><span class="tip">LinkedIn</span></a>
+    <a class="dock-item social" href="https://x.com/karthikpsreeni" target="_blank" rel="noopener" data-icon="x" aria-label="X"><span class="tip">X</span></a>
+    <a class="dock-item social" href="https://www.instagram.com/karthiksreenivasanp" target="_blank" rel="noopener" data-icon="instagram" aria-label="Instagram"><span class="tip">Instagram</span></a>
+    <a class="dock-item" href="mailto:karthiksreenivasanp@gmail.com" data-icon="mail" aria-label="Email"><span class="tip">Email</span></a>
+  </nav>
 
-  <!-- Manifesto / About -->
-  <section class="section" id="about">
-    <div class="manifesto-wrap">
-      <div class="win-bar">
-        <div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>
-        <span style="font-family: 'Raleway', sans-serif; font-size: 12px; margin-left: 8px; color: #666; font-weight: 500;">notes.txt</span>
-      </div>
-      <div class="manifesto-doc">
-        <p>hey there, i'm karthik! <span class="kaomoji" style="position:static; font-size: 16px; margin-left: 4px;">^ ω ^</span></p>
-        <p>i'm currently pursuing a B.Tech in AI & Data Science.</p>
-        <p>i love building <span class="highlight">offline ai systems</span>, exploring machine learning, and crafting terminal-based workflows.</p>
-        <p>i believe in open source, linux, and turning random ideas into useful software. when i'm not coding, i'm probably tinkering with a new tool or reading about language models.</p>
-        <p>feel free to poke around my work or drop me an email.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="connect-links">
-    <a href="https://www.linkedin.com/in/karthiksreenivasanp/" target="_blank">linkedin</a>
-    <a href="https://x.com/karthikpsreeni" target="_blank">x</a>
-    <a href="https://www.instagram.com/karthiksreenivasanp" target="_blank">instagram</a>
-    <a href="mailto:karthiksreenivasanp@gmail.com">email</a>
-  </div>
-
+  <script src="vendor/dompurify/purify.min.js"></script>
+  <script src="assets/js/mac.js"></script>
+  <script src="assets/js/blog.js"></script>
   <script>
-    // Theme Toggle Logic
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      if (currentTheme === 'light') {
-        document.documentElement.removeAttribute('data-theme');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
+    // Typing tagline
+    (function () {
+      const text = "an ai & data science student building offline ai tools and creative software.";
+      const el = document.getElementById('type-target');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
+      let i = 0;
+      (function type() { if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 38); } })();
+    })();
+
+    // Latest posts
+    (async function () {
+      const box = document.getElementById('blog-preview');
+      const posts = (await Blog.list()).slice(0, 3);
+      if (!posts.length) {
+        box.innerHTML = `<div class="empty"><div class="icon">${KS.icon('blog')}</div>
+          <h3>Nothing here yet</h3><p>No posts have been published. Check back soon.</p></div>`;
+        return;
       }
-    });
-
-    // Typing Effect for subtitle (Maximkich vibe)
-    const textToType = "an ai & data science student building offline ai tools and creative software.";
-    const typingDelay = 40;
-    let charIndex = 0;
-    
-    function typeText() {
-      if (charIndex < textToType.length) {
-        document.getElementById('type-target').textContent += textToType.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeText, typingDelay);
-      }
-    }
-    // Start typing after a short delay
-    setTimeout(typeText, 500);
-
-    // Update clock
-    function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      let minutes = now.getMinutes();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12; 
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      document.getElementById('clock').innerText = hours + ':' + minutes + ' ' + ampm;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-    
-    // Add hover effect to buymeacoffee button
-    const bmcBtn = document.querySelector('img[alt="Buy Me A Coffee"]');
-    if (bmcBtn) {
-      bmcBtn.addEventListener('mouseenter', () => bmcBtn.style.transform = 'translateY(-2px)');
-      bmcBtn.addEventListener('mouseleave', () => bmcBtn.style.transform = 'translateY(0)');
-    }
-
-    // Make windows draggable (only on desktop/screens larger than 768px)
-    const windows = document.querySelectorAll('.win-wrap');
-    windows.forEach(win => {
-      let isDragging = false;
-      let startX, startY, currentX = 0, currentY = 0;
-      
-      const bar = win.querySelector('.win-bar');
-      bar.style.cursor = 'grab';
-      
-      bar.addEventListener('mousedown', e => {
-        if (window.innerWidth <= 768) return; // Disable drag on mobile layout
-        isDragging = true;
-        bar.style.cursor = 'grabbing';
-        startX = e.clientX - currentX;
-        startY = e.clientY - currentY;
-        win.style.transition = 'none';
-        win.style.zIndex = 50;
-      });
-      
-      window.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        currentX = e.clientX - startX;
-        currentY = e.clientY - startY;
-        
-        let rot = '';
-        if(win.classList.contains('win-1')) rot = 'rotate(-3deg)';
-        else if(win.classList.contains('win-2')) rot = 'rotate(2deg)';
-        else if(win.classList.contains('win-3')) rot = 'rotate(5deg)';
-        else if(win.classList.contains('win-4')) rot = 'rotate(-4deg)';
-        
-        win.style.transform = `translate(${currentX}px, ${currentY}px) ${rot}`;
-      });
-      
-      window.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          bar.style.cursor = 'grab';
-          win.style.transition = 'transform 0.2s, background 0.3s, border-color 0.3s';
-          win.style.zIndex = 5;
-        }
-      });
-    });
+      box.innerHTML = posts.map(p => {
+        const cover = Blog.safeMedia(p.cover);
+        return `<a class="post-row" href="blog.html#/${p.slug}">
+          ${cover ? `<img class="thumb" src="${Blog.esc(cover)}" alt="" loading="lazy">` : `<span class="thumb">${KS.icon('blog')}</span>`}
+          <div><h3>${Blog.esc(p.title)}</h3><p>${Blog.esc(p.summary)}</p></div>
+          <span class="meta">${Blog.typeLabel(p.type)} · ${Blog.date(p.date)}</span>
+        </a>`;
+      }).join('') + `<div class="blog-foot"><a class="btn small" href="blog.html">See all posts</a></div>`;
+    })();
   </script>
 </body>
 </html>
