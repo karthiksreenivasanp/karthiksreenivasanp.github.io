@@ -263,6 +263,7 @@ body .win.zoomed { transform: none; }
   padding: 0;
 }
 [data-theme="glass"] .dock-item { background: rgba(255,255,255,.14); }
+.dock-item.coffee-dock { background: #ffdd00; color: #1a1a2e; border-color: transparent; }
 .dock-item svg { width: 46%; height: 46%; }
 .dock-item .tip {
   position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%);

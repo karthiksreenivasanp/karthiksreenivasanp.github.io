@@ -26,6 +26,7 @@
     github: `<svg viewBox="0 0 24 24" ${P}><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>`,
     linkedin: `<span style="font:800 17px Raleway,sans-serif">in</span>`,
     x: `<span style="font-size:17px">𝕏</span>`,
+    coffee: `<svg viewBox="0 0 24 24" ${P}><path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2.5v2.5M11.5 2.5v2.5"/></svg>`,
     editor: `<svg viewBox="0 0 24 24" ${P}><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>`,
     sun: `<svg width="15" height="15" viewBox="0 0 24 24" ${P}><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>`,
     wifi: `<svg width="15" height="15" viewBox="0 0 24 24" ${P}><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>`
