@@ -6,6 +6,7 @@
   const MAX_VIDEO = 50 * 1024 * 1024;
   const AUTH_KEY = 'ks-gh';
   const DRAFT_KEY = 'ks-draft-new';
+  const SITE_OWNER = 'karthiksreenivasanp';
 
   /* ---------------- GitHub API ---------------- */
   const GH = {
@@ -528,6 +529,9 @@
     Object.assign(GH, { token: auth.token.trim(), owner, repo, branch: auth.branch.trim() || 'main' });
     const info = await GH.req(`/repos/${owner}/${repo}`);
     if (!info.permissions || !info.permissions.push) throw Object.assign(new Error('This token can read the repo but can\'t write to it. Give it Contents: Read and write.'), { local: true });
+    // Only the site owner may publish, even if other people have write access to the repo.
+    const me = await GH.req('/user');
+    if (!me || String(me.login).toLowerCase() !== SITE_OWNER) throw Object.assign(new Error(`Only ${SITE_OWNER} can publish here. This token belongs to ${me && me.login ? me.login : 'another account'}.`), { local: true });
     await GH.req(GH.repoPath(`/git/ref/heads/${encodeURIComponent(GH.branch)}`));
     lsDel(localStorage, AUTH_KEY); lsDel(sessionStorage, AUTH_KEY);
     lsSet(remember ? localStorage : sessionStorage, AUTH_KEY, JSON.stringify(auth));
