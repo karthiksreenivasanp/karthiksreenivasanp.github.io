@@ -143,6 +143,34 @@
   const QuillVideo = Quill.import('formats/video');
   class EmbedVideo extends QuillVideo { html() { return this.domNode.outerHTML; } }
   Quill.register(EmbedVideo, true);
+  // Collage: a grid of photos and videos, stored as <div class="post-collage"> with <img>/<video> children.
+  class Collage extends BlockEmbed {
+    static create(items) {
+      const n = super.create();
+      const list = Array.isArray(items) ? items : [];
+      n.setAttribute('data-count', list.length);
+      n.setAttribute('contenteditable', 'false');
+      list.forEach(it => {
+        const el = document.createElement(it.type === 'video' ? 'video' : 'img');
+        el.setAttribute('src', it.src);
+        if (it.type === 'video') { el.setAttribute('muted', ''); el.setAttribute('playsinline', ''); el.setAttribute('preload', 'metadata'); }
+        else el.setAttribute('alt', it.alt || '');
+        n.appendChild(el);
+      });
+      return n;
+    }
+    static value(n) {
+      return [...n.children].filter(el => /^(IMG|VIDEO)$/.test(el.tagName))
+        .map(el => ({ type: el.tagName === 'VIDEO' ? 'video' : 'img', src: el.getAttribute('src'), alt: el.getAttribute('alt') || '' }));
+    }
+    html() {
+      const d = this.domNode.cloneNode(true);
+      d.removeAttribute('contenteditable');
+      return d.outerHTML;
+    }
+  }
+  Collage.blotName = 'collage'; Collage.tagName = 'div'; Collage.className = 'post-collage';
+  Quill.register(Collage);
   const Delta = Quill.import('delta');
 
   const localVideos = new Map(); // blob: URL -> File (uploaded on publish)
@@ -153,7 +181,7 @@
       theme: 'snow',
       placeholder: 'Write your post… Add photos and videos from the toolbar, or drop them here.',
       modules: {
-        toolbar: { container: '#toolbar', handlers: { image: pickImages, video: addVideo } },
+        toolbar: { container: '#toolbar', handlers: { image: pickImages, video: addVideo, collage: addCollage } },
         uploader: {
           mimetypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/avif', 'video/mp4', 'video/webm', 'video/quicktime'],
           handler: (range, files) => insertFiles(files, range ? range.index : quill.getLength())
@@ -161,7 +189,10 @@
         clipboard: {}
       }
     });
-    quill.clipboard.addMatcher('VIDEO', node => new Delta().insert({ videofile: node.getAttribute('src') || '' }));
+    quill.clipboard.addMatcher('VIDEO', (node, delta) => node.closest && node.closest('.post-collage') ? delta : new Delta().insert({ videofile: node.getAttribute('src') || '' }));
+    quill.clipboard.addMatcher('DIV', (node, delta) => node.classList.contains('post-collage') ? new Delta().insert({ collage: Collage.value(node) }) : delta);
+    const cbtn = document.querySelector('.ql-collage');
+    if (cbtn) cbtn.innerHTML = '<svg viewBox="0 0 18 18"><rect class="ql-stroke" x="2" y="2" width="8" height="14" rx="1"/><rect class="ql-stroke" x="12" y="2" width="4" height="6" rx="1"/><rect class="ql-stroke" x="12" y="10" width="4" height="6" rx="1"/></svg>';
     quill.on('text-change', () => { markDirty(); updateWords(); });
   }
 
@@ -181,6 +212,33 @@
         quill.setSelection(index, 0, 'silent');
       } catch (e) { KS.toast(esc(e.message), 5000); }
     }
+  }
+
+  function addCollage() {
+    const index = (quill.getSelection(true) || { index: quill.getLength() }).index;
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*,video/*'; inp.multiple = true;
+    inp.onchange = async () => {
+      const files = [...inp.files].filter(f => /^(image|video)\//.test(f.type));
+      if (files.length < 2) { KS.toast('Pick at least 2 photos or videos for a collage.'); return; }
+      if (files.length > 12) { KS.toast('A collage can hold up to 12 items. Pick fewer.'); return; }
+      KS.toast(`Adding ${files.length} items…`);
+      const items = [];
+      for (const f of files) {
+        try {
+          if (f.type.startsWith('video/')) {
+            if (f.size > MAX_VIDEO) throw new Error(`${f.name} is ${mb(f.size)}. Videos must be under 50 MB.`);
+            const url = URL.createObjectURL(f);
+            localVideos.set(url, f);
+            items.push({ type: 'video', src: url });
+          } else items.push({ type: 'img', src: await prepareImage(f), alt: '' });
+        } catch (e) { KS.toast(esc(e.message), 5000); return; }
+      }
+      quill.insertEmbed(index, 'collage', items, 'user');
+      quill.insertText(index + 1, '\n', 'user');
+      quill.setSelection(index + 2, 0, 'silent');
+    };
+    inp.click();
   }
 
   function pickImages() {
@@ -370,7 +428,10 @@
       };
       for (const el of doc.querySelectorAll('img[src^="data:"], img[src^="blob:"]')) el.setAttribute('src', await upload(el.getAttribute('src'), 'photo'));
       for (const el of doc.querySelectorAll('video[src^="blob:"], video[src^="data:"]')) el.setAttribute('src', await upload(el.getAttribute('src'), 'video'));
-      doc.querySelectorAll('video').forEach(v => { v.setAttribute('controls', ''); v.setAttribute('playsinline', ''); v.setAttribute('preload', 'metadata'); });
+      doc.querySelectorAll('video').forEach(v => {
+        v.setAttribute('playsinline', ''); v.setAttribute('preload', 'metadata');
+        if (v.closest('.post-collage')) v.setAttribute('muted', ''); else v.setAttribute('controls', '');
+      });
 
       let cover = state.cover;
       if (cover && /^(data:|blob:)/.test(cover)) cover = await upload(cover, 'photo');
@@ -441,7 +502,8 @@
         <span class="chip">${Blog.typeLabel(state.type)}</span>
         <h1 style="font-size:2rem;font-weight:800;line-height:1.15;margin:10px 0 20px">${esc($('title').value || 'Untitled')}</h1>
         <div class="post-content">${quill.getSemanticHTML().replace(/&nbsp;/g, ' ')}</div></div>`,
-      actions: [{ label: 'Close', value: true, primary: true }]
+      actions: [{ label: 'Close', value: true, primary: true }],
+      onOpen(wrap) { Blog.enhance(wrap); }
     });
   }
 

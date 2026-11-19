@@ -18,3 +18,62 @@
 .post-content .ql-align-right { text-align: right; }
 .post-content .ql-align-justify { text-align: justify; }
 .post-content hr { border: 0; border-top: 1px solid var(--divider); margin: 2em 0; }
+
+/* ---------- Collage ---------- */
+.post-collage {
+  display: grid; gap: 6px; margin: 1.2em 0;
+  grid-template-columns: repeat(3, 1fr); grid-auto-rows: 170px;
+  border-radius: 12px; overflow: hidden;
+}
+.post-collage > img, .post-collage > video,
+.post-collage .collage-tile > img, .post-collage .collage-tile > video {
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; margin: 0; max-width: none; background: #111;
+}
+.post-collage[data-count="2"] { grid-template-columns: 1fr 1fr; grid-auto-rows: 280px; }
+.post-collage[data-count="3"] { grid-template-columns: 2fr 1fr; grid-auto-rows: 170px; }
+.post-collage[data-count="3"] > :first-child { grid-row: span 2; }
+.post-collage[data-count="4"] { grid-template-columns: 1fr 1fr; grid-auto-rows: 200px; }
+/* 5: two wide on top, three below */
+.post-collage[data-count="5"] { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 200px; }
+.post-collage[data-count="5"] > :nth-child(-n+2) { grid-column: span 3; }
+.post-collage[data-count="5"] > :nth-child(n+3) { grid-column: span 2; }
+/* 6, 9, 12: one big tile, rest fill the grid exactly */
+.post-collage[data-count="6"] > :first-child,
+.post-collage[data-count="9"] > :first-child,
+.post-collage[data-count="12"] > :first-child { grid-column: span 2; grid-row: span 2; }
+/* 7, 10: last tile fills the final row; 8, 11: last tile takes two cells */
+.post-collage[data-count="7"] > :last-child, .post-collage[data-count="10"] > :last-child { grid-column: span 3; }
+.post-collage[data-count="8"] > :last-child, .post-collage[data-count="11"] > :last-child { grid-column: span 2; }
+.collage-tile { position: relative; padding: 0; border: 0; cursor: zoom-in; background: none; overflow: hidden; }
+.collage-tile > img, .collage-tile > video { transition: transform .3s; }
+.collage-tile:hover > img, .collage-tile:hover > video { transform: scale(1.04); }
+.collage-tile .play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 46px; height: 46px; border-radius: 50%; background: rgba(0, 0, 0, .55); color: #fff;
+  display: grid; place-items: center; pointer-events: none;
+}
+.collage-tile .more {
+  position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0, 0, 0, .5);
+  color: #fff; font: 800 1.6rem 'Raleway', sans-serif; pointer-events: none;
+}
+@media (max-width: 600px) {
+  .post-collage, .post-collage[data-count] { grid-template-columns: 1fr 1fr; grid-auto-rows: 120px; gap: 4px; }
+  .post-collage[data-count] > :nth-child(n) { grid-column: auto; grid-row: auto; }
+  .post-collage[data-count="2"] { grid-auto-rows: 180px; }
+  /* 3 or more: first tile full width; with an even count the last tile is full width too */
+  .post-collage[data-count]:not([data-count="2"]) > :first-child:nth-child(n) { grid-column: span 2; grid-row: span 2; }
+  .post-collage[data-count="4"] > :last-child:nth-child(n), .post-collage[data-count="6"] > :last-child:nth-child(n),
+  .post-collage[data-count="8"] > :last-child:nth-child(n), .post-collage[data-count="10"] > :last-child:nth-child(n),
+  .post-collage[data-count="12"] > :last-child:nth-child(n) { grid-column: span 2; }
+}
+
+/* ---------- Lightbox ---------- */
+.lightbox { position: fixed; inset: 0; z-index: 600; background: rgba(5, 6, 18, .94); display: grid; grid-template-rows: auto 1fr auto; touch-action: pan-y; }
+.lightbox .lb-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; color: #ddd; font: 600 14px 'Raleway', sans-serif; }
+.lightbox .lb-stage { display: grid; place-items: center; min-height: 0; padding: 0 64px; }
+.lightbox .lb-stage img, .lightbox .lb-stage video { max-width: 100%; max-height: calc(100vh - 140px); border-radius: 8px; object-fit: contain; }
+.lightbox button { background: rgba(255, 255, 255, .12); color: #fff; border: 0; border-radius: 50%; width: 44px; height: 44px; cursor: pointer; font-size: 22px; display: grid; place-items: center; }
+.lightbox button:hover { background: rgba(255, 255, 255, .22); }
+.lightbox .lb-prev, .lightbox .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
+.lightbox .lb-prev { left: 12px; } .lightbox .lb-next { right: 12px; }
+@media (max-width: 600px) { .lightbox .lb-stage { padding: 0 8px; } .lightbox .lb-prev, .lightbox .lb-next { top: auto; bottom: 14px; transform: none; } }

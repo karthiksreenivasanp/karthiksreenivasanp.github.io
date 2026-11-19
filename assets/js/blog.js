@@ -48,7 +48,71 @@
       return isNaN(d) ? '' : d.toLocaleDateString([], long ? { day: 'numeric', month: 'long', year: 'numeric' } : { day: 'numeric', month: 'short', year: 'numeric' });
     },
     typeLabel(t) { return t === 'update' ? 'Update' : 'Blog'; },
-    safeMedia(src) { return /^(media\/|https:\/\/)/.test(src || '') ? src : ''; }
+    safeMedia(src) { return /^(media\/|https:\/\/)/.test(src || '') ? src : ''; },
+
+    // Turn collages inside `root` into clickable grids that open a lightbox.
+    enhance(root) {
+      root.querySelectorAll('.post-collage').forEach(col => {
+        if (col.dataset.ready) return;
+        col.dataset.ready = '1';
+        const items = [...col.children].filter(el => /^(IMG|VIDEO)$/.test(el.tagName));
+        col.dataset.count = items.length;
+        items.forEach((el, i) => {
+          const tile = document.createElement('button');
+          tile.type = 'button';
+          tile.className = 'collage-tile';
+          tile.setAttribute('aria-label', `Open ${el.tagName === 'VIDEO' ? 'video' : 'photo'} ${i + 1} of ${items.length}`);
+          el.replaceWith(tile);
+          if (el.tagName === 'VIDEO') {
+            el.removeAttribute('controls'); el.muted = true; el.setAttribute('preload', 'metadata');
+            tile.append(el);
+            tile.insertAdjacentHTML('beforeend', '<span class="play" aria-hidden="true">▶</span>');
+          } else tile.append(el);
+          tile.addEventListener('click', () => Blog.lightbox(items.map(x => ({ type: x.tagName === 'VIDEO' ? 'video' : 'img', src: x.getAttribute('src'), alt: x.getAttribute('alt') || '' })), i));
+        });
+      });
+    },
+
+    lightbox(items, start) {
+      let i = start;
+      const box = document.createElement('div');
+      box.className = 'lightbox';
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.setAttribute('aria-label', 'Media viewer');
+      box.innerHTML = `<div class="lb-top"><span class="lb-count"></span><button class="lb-close" aria-label="Close">×</button></div>
+        <div class="lb-stage"></div><div></div>
+        ${items.length > 1 ? '<button class="lb-prev" aria-label="Previous">‹</button><button class="lb-next" aria-label="Next">›</button>' : ''}`;
+      const stage = box.querySelector('.lb-stage');
+      const show = () => {
+        const it = items[i];
+        stage.innerHTML = '';
+        const el = document.createElement(it.type === 'video' ? 'video' : 'img');
+        el.src = it.src;
+        if (it.type === 'video') { el.controls = true; el.autoplay = true; el.playsInline = true; } else el.alt = it.alt;
+        stage.append(el);
+        box.querySelector('.lb-count').textContent = `${i + 1} / ${items.length}`;
+      };
+      const go = d => { i = (i + d + items.length) % items.length; show(); };
+      const close = () => { box.remove(); document.removeEventListener('keydown', key); document.body.style.overflow = ''; };
+      const key = e => {
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowRight') go(1);
+        else if (e.key === 'ArrowLeft') go(-1);
+      };
+      box.querySelector('.lb-close').addEventListener('click', close);
+      box.querySelector('.lb-prev') && box.querySelector('.lb-prev').addEventListener('click', () => go(-1));
+      box.querySelector('.lb-next') && box.querySelector('.lb-next').addEventListener('click', () => go(1));
+      stage.addEventListener('click', e => { if (e.target === stage) close(); });
+      let sx = null;
+      box.addEventListener('pointerdown', e => { sx = e.clientX; });
+      box.addEventListener('pointerup', e => { if (sx !== null && Math.abs(e.clientX - sx) > 50 && items.length > 1) go(e.clientX < sx ? 1 : -1); sx = null; });
+      document.addEventListener('keydown', key);
+      document.body.style.overflow = 'hidden';
+      document.body.append(box);
+      show();
+      box.querySelector('.lb-close').focus();
+    }
   };
   window.Blog = Blog;
 })();

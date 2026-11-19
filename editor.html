@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/quill/quill.snow.css">
-  <link rel="stylesheet" href="assets/css/mac.css?v=5">
-  <link rel="stylesheet" href="assets/css/post.css?v=5">
+  <link rel="stylesheet" href="assets/css/mac.css?v=6">
+  <link rel="stylesheet" href="assets/css/post.css?v=6">
   <style>
     .desk { padding: 52px 16px 96px; max-width: 1320px; margin: 0 auto; }
     .ed-win { height: calc(100vh - 52px - 96px); min-height: 520px; display: flex; flex-direction: column; }
@@ -85,6 +85,8 @@
     .ql-editor img, .ql-editor video, .ql-editor iframe { border-radius: 10px; }
     .ql-editor video { width: 100%; background: #000; }
     .ql-editor .ql-video { width: 100%; aspect-ratio: 16/9; height: auto; }
+    .ql-editor .post-collage { cursor: default; outline: 2px dashed transparent; }
+    .ql-editor .post-collage:hover { outline-color: var(--accent-soft); }
     .ql-snow .ql-tooltip { background: var(--win-solid); color: var(--text); border-color: var(--win-border); border-radius: 10px; box-shadow: var(--shadow); z-index: 20; }
     .ql-snow .ql-tooltip input[type=text] { width: 220px; }
     .ql-editor pre.ql-syntax, .ql-editor .ql-code-block-container { background: rgba(10,12,30,.55); color: #e6e6f0; border-radius: 10px; }
@@ -182,7 +184,7 @@
                   <span class="ql-formats"><button class="ql-bold"></button><button class="ql-italic"></button><button class="ql-underline"></button><button class="ql-strike"></button></span>
                   <span class="ql-formats"><button class="ql-list" value="ordered"></button><button class="ql-list" value="bullet"></button><button class="ql-blockquote"></button><button class="ql-code-block"></button></span>
                   <span class="ql-formats"><select class="ql-align"></select><button class="ql-link"></button></span>
-                  <span class="ql-formats"><button class="ql-image" title="Add photos"></button><button class="ql-video" title="Add a video"></button></span>
+                  <span class="ql-formats"><button class="ql-image" title="Add photos"></button><button class="ql-video" title="Add a video"></button><button class="ql-collage" title="Add a collage of photos and videos" aria-label="Add a collage"></button></span>
                   <span class="ql-formats"><button class="ql-clean"></button></span>
                 </div>
                 <div id="editor"></div>
@@ -192,7 +194,7 @@
               <span id="words">0 words</span>
               <span id="draft-state"></span>
               <span class="spacer"></span>
-              <span class="limits">Photos up to 10 MB · videos up to 50 MB</span>
+              <span class="limits">Photos up to 10 MB · videos up to 50 MB · collages 2–12 items</span>
             </div>
           </section>
         </div>
@@ -209,8 +211,8 @@
 
   <script src="vendor/quill/quill.js"></script>
   <script src="vendor/dompurify/purify.min.js"></script>
-  <script src="assets/js/mac.js?v=5"></script>
-  <script src="assets/js/blog.js?v=5"></script>
-  <script src="assets/js/editor.js?v=5"></script>
+  <script src="assets/js/mac.js?v=6"></script>
+  <script src="assets/js/blog.js?v=6"></script>
+  <script src="assets/js/editor.js?v=6"></script>
 </body>
 </html>

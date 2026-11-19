@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/mac.css?v=5">
-  <link rel="stylesheet" href="assets/css/post.css?v=5">
+  <link rel="stylesheet" href="assets/css/mac.css?v=6">
+  <link rel="stylesheet" href="assets/css/post.css?v=6">
   <style>
     .desk { padding: 58px 20px 100px; max-width: 1240px; margin: 0 auto; }
     .notes { height: calc(100vh - 58px - 100px); min-height: 480px; display: flex; flex-direction: column; }
@@ -101,8 +101,8 @@
   </nav>
 
   <script src="vendor/dompurify/purify.min.js"></script>
-  <script src="assets/js/mac.js?v=5"></script>
-  <script src="assets/js/blog.js?v=5"></script>
+  <script src="assets/js/mac.js?v=6"></script>
+  <script src="assets/js/blog.js?v=6"></script>
   <script>
   (async function () {
     const notes = document.getElementById('notes');
@@ -170,6 +170,7 @@
         <h1 class="title">${Blog.esc(post.title)}</h1>
         <div class="post-content">${Blog.clean(post.html)}</div>
       </div>`;
+      Blog.enhance(reader);
       reader.querySelector('.share').addEventListener('click', async () => {
         try { await navigator.clipboard.writeText(location.href); KS.toast('Link copied'); }
         catch (e) { KS.toast('Copy the address from your browser bar'); }
