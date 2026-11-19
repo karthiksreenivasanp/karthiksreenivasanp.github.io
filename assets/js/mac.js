@@ -109,10 +109,10 @@
     const clock = document.getElementById('clock');
     const tick = () => {
       const d = new Date();
-      clock.textContent = d.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' }) + '  ' +
-        d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      clock.textContent = innerWidth < 520 ? time : d.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' }) + '  ' + time;
     };
-    tick(); setInterval(tick, 15000);
+    tick(); setInterval(tick, 15000); addEventListener('resize', tick);
   }
   function closeMenus() { document.querySelectorAll('.menu-btn[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false')); }
 

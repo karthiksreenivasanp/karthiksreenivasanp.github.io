@@ -141,7 +141,7 @@ html.refract[data-theme="glass"] .lg-refract {
 .menubar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   display: flex; justify-content: space-between; align-items: center;
-  height: 34px; padding: 0 14px;
+  height: 34px; padding: 0 max(14px, env(safe-area-inset-right, 0px)) 0 max(14px, env(safe-area-inset-left, 0px));
   background: var(--bar-bg);
   border-bottom: 1px solid var(--win-border);
   font-family: 'Raleway', sans-serif; font-size: 13px; font-weight: 600;
@@ -200,6 +200,7 @@ html.refract[data-theme="glass"] .lg-refract {
 .lights:hover .light, .light:focus-visible { color: rgba(60, 0, 0, .7); }
 .lights:hover .min { color: rgba(90, 50, 0, .75); }
 .lights:hover .zoom { color: rgba(0, 60, 0, .7); }
+.light { position: relative; }
 .light::after { content: attr(data-glyph); }
 .light.dot-only { cursor: default; }
 .win-title {
@@ -243,7 +244,7 @@ body .win.zoomed { transform: none; }
 
 /* ---------- Dock ---------- */
 .dock {
-  position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 190;
+  position: fixed; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 190;
   display: flex; align-items: flex-end; gap: 6px;
   padding: 7px 9px; height: 64px;
   border-radius: 22px;
@@ -341,3 +342,49 @@ body .win.zoomed { transform: none; }
 .desktop-empty h2 { font-size: 1.35rem; font-weight: 800; }
 .desktop-empty p { color: var(--muted); font-size: 14px; max-width: 34ch; }
 .desktop-empty .actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+
+/* =========================================================
+   Every screen size
+   ========================================================= */
+
+/* Phones */
+@media (max-width: 700px) {
+  body { font-size: 16px; }
+  .section { padding-top: 64px; padding-left: 16px; padding-right: 16px; }
+  .section-head h2 { font-size: 1.75rem; }
+  .section-head p { font-size: 15px; }
+  .dock { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+  .toast { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); font-size: 14.5px; }
+  .chip { font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .menubar { padding-left: 10px; padding-right: 10px; }
+  .menubar .left > a, .menubar .menu-btn { padding-left: 6px; padding-right: 6px; }
+  .dock { gap: 4px; padding: 5px 6px; }
+  .dock-item { --size: 38px; }
+}
+
+/* Phones turned sideways and other short screens */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dock { height: 50px; padding: 4px 7px; bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+  .dock-item { --size: 38px; border-radius: 10px; }
+  .dock .sep { height: 34px; }
+  .win.zoomed { top: 40px !important; bottom: 62px !important; }
+}
+
+/* Touch screens: bigger tap targets, no zoom-on-focus */
+@media (pointer: coarse) {
+  .lights { gap: 11px; }
+  .light { width: 16px; height: 16px; }
+  .light::before { content: ""; position: absolute; inset: -10px -6px; }
+  .win-bar { height: 42px; }
+  .menubar { height: 40px; }
+  .menubar .left > a, .menubar .menu-btn { padding-top: 10px; padding-bottom: 10px; }
+  .menubar .right .menu-btn { padding: 10px 9px; }
+  .menu { min-width: 240px; }
+  .menu button, .menu a { padding: 11px 12px; font-size: 15px; }
+  .btn { min-height: 44px; }
+  .btn.small { min-height: 38px; padding: 8px 14px; }
+  input:not([type=checkbox]):not([type=radio]):not(.title-input), select, textarea { font-size: 16px !important; }
+  html { scroll-padding-top: 66px; }
+}

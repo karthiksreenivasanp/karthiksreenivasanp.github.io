@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Blog · karthiksreenivasanp</title>
   <meta name="description" content="Blog posts and updates from Karthik Sreenivasan P.">
   <link rel="icon" type="image/png" href="favicon.png">
@@ -10,11 +10,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/mac.css?v=10">
-  <link rel="stylesheet" href="assets/css/post.css?v=10">
+  <link rel="stylesheet" href="assets/css/mac.css?v=11">
+  <link rel="stylesheet" href="assets/css/post.css?v=11">
   <style>
     .desk { padding: 58px 20px 100px; max-width: 1240px; margin: 0 auto; }
-    .notes { height: calc(100vh - 58px - 100px); min-height: 480px; display: flex; flex-direction: column; }
+    .notes { height: calc(100vh - 58px - 100px); height: calc(100dvh - 58px - 100px - env(safe-area-inset-bottom, 0px)); min-height: 420px; display: flex; flex-direction: column; }
     .notes .win-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 320px 1fr; }
 
     /* Sidebar */
@@ -34,7 +34,7 @@
     .item[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
     .item[aria-current="page"] .snip, .item[aria-current="page"] .when { color: inherit; opacity: .8; }
     .item h3 { font-size: 14.5px; font-weight: 700; line-height: 1.3; }
-    .item .when { font-size: 11.5px; color: var(--faint); margin-top: 3px; }
+    .item .when { font-size: 12.5px; color: var(--faint); margin-top: 3px; }
     .item .snip { font-size: 12.5px; color: var(--muted); margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .list-empty { padding: 30px 16px; text-align: center; color: var(--muted); font-size: 13px; }
 
@@ -51,15 +51,36 @@
     .loading { padding: 60px; text-align: center; color: var(--faint); }
 
     @media (max-width: 760px) {
-      .desk { padding: 46px 8px 76px; }
-      .notes { height: calc(100vh - 46px - 76px); min-height: 0; }
+      .desk { padding: 34px 0 0; }
+      .notes {
+        height: calc(100vh - 34px - 70px); height: calc(100dvh - 34px - 70px - env(safe-area-inset-bottom, 0px));
+        min-height: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0;
+      }
       .notes .win-body { grid-template-columns: 1fr; }
       .notes .reader { display: none; }
       .notes.show-post .side { display: none; }
       .notes.show-post .reader { display: block; }
       .reader .back { display: inline-flex; }
-      .reader-inner { padding: 22px 18px 40px; }
-      .post-content { font-size: 16px; }
+      .reader-inner { padding: 18px 18px 40px; }
+      .reader .cover { max-height: 300px; border-radius: 12px; margin-bottom: 18px; }
+      .reader h1.title { font-size: clamp(1.7rem, 8vw, 2.2rem); margin-bottom: 20px; }
+      .reader .meta { font-size: 14px; }
+      .post-content { font-size: 17px; line-height: 1.7; }
+      .side-tools { padding: 12px; }
+      .seg button { padding: 8px 0; font-size: 14px; }
+      .item { padding: 14px; }
+      .item h3 { font-size: 16.5px; }
+      .item .when { font-size: 13px; }
+      .item .snip { font-size: 14px; }
+    }
+    @media (pointer: coarse) and (max-width: 760px) { .desk { padding-top: 40px; } .notes { height: calc(100dvh - 40px - 70px - env(safe-area-inset-bottom, 0px)); } }
+    @media (max-height: 500px) and (orientation: landscape) {
+      .desk { padding: 40px 10px 0; }
+      .notes { height: calc(100vh - 40px - 60px); height: calc(100dvh - 40px - 60px - env(safe-area-inset-bottom, 0px)); min-height: 0; }
+      .notes .win-body { grid-template-columns: 240px 1fr; }
+      .side-tools { padding: 8px; gap: 6px; }
+      .reader-inner { padding: 18px 24px 30px; }
+      .reader .cover { max-height: 180px; }
     }
   </style>
 </head>
@@ -102,8 +123,8 @@
   </nav>
 
   <script src="vendor/dompurify/purify.min.js"></script>
-  <script src="assets/js/mac.js?v=10"></script>
-  <script src="assets/js/blog.js?v=10"></script>
+  <script src="assets/js/mac.js?v=11"></script>
+  <script src="assets/js/blog.js?v=11"></script>
   <script>
   (async function () {
     const notes = document.getElementById('notes');
