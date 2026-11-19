@@ -129,10 +129,16 @@
 
   /* ---------------- Toast ---------------- */
   let toastTimer;
-  function toast(html, ms = 3200) {
+  function toast(html, ms = 3200, action) {
     let t = document.querySelector('.toast');
     if (!t) { t = document.createElement('div'); t.className = 'toast glass'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
     t.innerHTML = html;
+    if (action) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'toast-action'; b.textContent = action.label;
+      b.addEventListener('click', () => { t.classList.remove('show'); action.fn(); });
+      t.append(' ', b);
+    }
     requestAnimationFrame(() => t.classList.add('show'));
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), ms);
@@ -258,6 +264,7 @@
       win.dataset.state = 'min';
       delete win.dataset.busy;
       syncDock();
+      explain(win, 'min');
     },
 
     async restore(win, scroll) {
@@ -287,6 +294,7 @@
       win.dataset.state = 'closed';
       delete win.dataset.busy;
       syncDock();
+      explain(win, 'closed');
     },
 
     async open(win, scroll) {
@@ -439,6 +447,53 @@
       const w = byId(it.dataset.target);
       it.classList.toggle('running', !!w && w.dataset.state === 'open');
     });
+    syncDesktop();
+  }
+
+  /* ---------------- Never leave visitors stuck ----------------
+     Pages with one main window (blog, editor) show a clear panel when it's
+     closed or minimized. Elsewhere a toast says where the window went. */
+  const escHtml = t => String(t || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function mainWindows() { return [...document.querySelectorAll('.win[data-win][data-main]')]; }
+  function mainHidden() { const m = mainWindows(); return m.length > 0 && m.every(w => w.dataset.state !== 'open'); }
+
+  function explain(win, kind) {
+    if (win.hasAttribute('data-main')) return; // the desktop panel explains it
+    const name = escHtml(win.dataset.title || 'Window');
+    if (kind === 'min') toast(`“${name}” is in the Dock. Click its icon to bring it back.`, 4500, { label: 'Restore', fn: () => WM.show(win, true) });
+    else toast(`“${name}” closed.`, 4500, { label: 'Undo', fn: () => WM.show(win, true) });
+  }
+
+  let panel;
+  function syncDesktop() {
+    const wins = mainWindows();
+    if (!wins.length) return;
+    if (!panel) {
+      const w = wins[0];
+      const label = w.dataset.title || 'window';
+      const onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
+      panel = document.createElement('div');
+      panel.className = 'desktop-empty glass';
+      panel.setAttribute('role', 'status');
+      panel.innerHTML = `<div class="icon">${icon(w.dataset.icon)}</div>
+        <h2></h2>
+        <p></p>
+        <div class="actions">
+          <button type="button" class="btn primary" data-reopen>Open ${escHtml(label)} again</button>
+          ${onHome ? '' : '<a class="btn" href="index.html">Go home</a>'}
+        </div>`;
+      panel.querySelector('[data-reopen]').addEventListener('click', () => wins.forEach(x => WM.show(x)));
+      document.body.appendChild(panel);
+    }
+    const hidden = mainHidden();
+    if (hidden) {
+      const w = wins[0];
+      const label = escHtml(w.dataset.title || 'window');
+      const min = w.dataset.state === 'min';
+      panel.querySelector('h2').innerHTML = min ? `${label} is minimized` : `${label} is closed`;
+      panel.querySelector('p').textContent = min ? 'It\'s waiting in the Dock at the bottom. Click its icon or the button below.' : 'Nothing is lost. Open it again or head back to the home page.';
+    }
+    panel.hidden = !hidden;
   }
 
   /* ---------------- Boot ---------------- */
