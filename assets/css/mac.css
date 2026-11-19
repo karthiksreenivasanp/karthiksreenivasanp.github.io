@@ -157,7 +157,11 @@ html.refract[data-theme="glass"] .lg-refract {
 .menubar .brand { color: var(--text) !important; font-weight: 800 !important; font-size: 14px !important; }
 .menubar .brand span { color: var(--accent); }
 .menubar .right { gap: 10px; color: var(--muted); }
-#clock { font-variant-numeric: tabular-nums; white-space: nowrap; }
+#clock { font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1; }
+.menubar .menu-wrap { display: flex; align-items: center; }
+.menubar .menu-btn, .menubar .left > a { display: inline-flex; align-items: center; line-height: 1; padding-top: 5px; padding-bottom: 5px; }
+.menubar .right .menu-btn { padding: 4px 6px; }
+.menubar svg { display: block; }
 .menu-wrap { position: relative; }
 .menu {
   position: absolute; top: calc(100% + 6px); left: 0; min-width: 220px; z-index: 210;
