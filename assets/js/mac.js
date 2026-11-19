@@ -33,15 +33,16 @@
   const icon = name => ICONS[name] || ICONS.projects;
 
   /* ---------------- Theme ---------------- */
-  const THEMES = [['glass', 'Liquid Glass'], ['light', 'Light'], ['dark', 'Dark']];
+  const THEMES = [['dark', 'Dark'], ['light', 'Light']];
   function setTheme(t) {
+    t = t === 'light' ? 'light' : 'dark';
     root.setAttribute('data-theme', t);
     store.set('theme', t);
     document.querySelectorAll('[data-theme-opt]').forEach(b => {
       b.querySelector('.check').textContent = b.dataset.themeOpt === t ? '✓' : '';
     });
   }
-  if (!root.getAttribute('data-theme')) root.setAttribute('data-theme', store.get('theme') || 'glass');
+  if (!root.getAttribute('data-theme')) root.setAttribute('data-theme', store.get('theme') === 'light' ? 'light' : 'dark');
   if (window.chrome && CSS.supports('backdrop-filter', 'blur(1px)')) root.classList.add('refract');
 
   /* ---------------- Page chrome (wallpaper, svg filter) ---------------- */

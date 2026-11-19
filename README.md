@@ -1,6 +1,6 @@
 # karthiksreenivasanp.github.io
 
-Personal site at https://www.karthiksreenivasanp.social, built as a macOS-style desktop with a Liquid Glass theme.
+Personal site at https://www.karthiksreenivasanp.social, built as a macOS-style desktop, dark by default with a light mode.
 
 ## Pages
 
