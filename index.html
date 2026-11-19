@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/mac.css?v=8">
+  <link rel="stylesheet" href="assets/css/mac.css?v=9">
   <style>
     main { padding-bottom: 150px; }
 
@@ -41,8 +41,23 @@
     .c-cls { color: #4ec9b0; } .c-str { color: #ffb38a; } .c-kw { color: #6fb6ff; } .c-fn { color: #f2e6a0; } .c-ret { color: #e59cf0; }
     [data-theme="light"] .c-cls { color: #1a7f6e; } [data-theme="light"] .c-str { color: #a3411f; }
     [data-theme="light"] .c-kw { color: #2f55d4; } [data-theme="light"] .c-fn { color: #795e26; } [data-theme="light"] .c-ret { color: #9b2f9b; }
-    .term { padding: 14px 18px; font-size: 13px; }
-    .term .p { color: var(--accent); } .term .o { color: var(--muted); }
+    .term { padding: 12px 16px; font-size: 13px; height: 190px; overflow-y: auto; cursor: text; }
+    .term .p { color: var(--accent); margin-right: 8px; } .term .o { color: var(--muted); white-space: pre-wrap; word-break: break-word; }
+    .term .err { color: #ff8b8b; }
+    .term a { color: var(--accent); }
+    .term b { color: var(--text); }
+    .term-line { display: flex; align-items: baseline; }
+    .term-line input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--text); font: inherit; caret-color: var(--accent); padding: 0; }
+    .term-line input:focus-visible { outline: none; }
+    .win.zoomed .term { height: auto; font-size: 15px; padding: 20px 26px; }
+    pre.code[contenteditable] { outline: none; cursor: text; min-height: 140px; }
+    pre.code[contenteditable]:focus { box-shadow: inset 0 0 0 2px var(--accent-soft); }
+    .win.zoomed pre.code { font-size: 16px; }
+    .hint code { color: var(--accent); }
+    /* Zoomed photo: show the whole picture, centred */
+    .w-avatar:not(.zoomed) .win-title { display: none; }
+    .c-com { color: #7f8aa3; font-style: italic; }
+    .w-avatar.zoomed img.win-body { flex: 1; min-height: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; background: #0d0d18; }
 
     /* About */
     .about { display: grid; grid-template-columns: 1.6fr 1fr; }
@@ -137,13 +152,13 @@
           <a class="btn" href="blog.html">Read the blog</a>
           <a class="btn" href="mailto:karthiksreenivasanp@gmail.com">Email me</a>
         </div>
-        <p class="hint">Every window here works. Drag them, minimize them into the Dock, or zoom.</p>
+        <p class="hint">Every window here works. Type <code>help</code> in the terminal, edit <code>me.py</code>, drag windows, minimize them into the Dock, or zoom.</p>
       </div>
 
       <div class="stack">
         <div class="win glass draggable w-code" data-win="me" data-title="me.py" data-icon="code">
           <div class="win-bar"><span class="win-title">me.py</span></div>
-<pre class="code win-body">class <span class="c-cls">karthik</span>:
+<pre class="code win-body" id="code-pad" contenteditable="plaintext-only" spellcheck="false" aria-label="me.py, editable code">class <span class="c-cls">karthik</span>:
   role = <span class="c-str">"think.eat.code"</span>
 
   <span class="c-kw">def</span> <span class="c-fn">build</span>(self):
@@ -151,17 +166,19 @@
         </div>
 
         <div class="win glass draggable w-avatar" data-win="avatar" data-title="avatar.jpeg" data-icon="image">
-          <div class="win-bar"></div>
+          <div class="win-bar"><span class="win-title">avatar.jpeg</span></div>
           <img class="win-body" src="other_image.jpeg" alt="Karthik">
         </div>
 
         <div class="win glass draggable w-term" data-win="zsh" data-title="Terminal" data-icon="terminal">
           <div class="win-bar"><span class="win-title">zsh</span></div>
-          <div class="term win-body">
-            <div><span class="p">~ $</span> whoami</div>
-            <div class="o">karthik — builds offline ai &amp; terminal tools</div>
-            <div><span class="p">~ $</span> ls ~/projects | wc -l</div>
-            <div class="o">3</div>
+          <div class="term win-body" id="term">
+            <div class="term-out" id="term-out" role="log" aria-live="polite">
+              <div><span class="p">~ $</span>whoami</div>
+              <div class="o">karthik — builds offline ai &amp; terminal tools</div>
+              <div class="o">Type <b>help</b> to see what you can do here.</div>
+            </div>
+            <label class="term-line"><span class="p">~ $</span><input id="term-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command" enterkeyhint="send"></label>
           </div>
         </div>
       </div>
@@ -298,8 +315,9 @@
   </nav>
 
   <script src="vendor/dompurify/purify.min.js"></script>
-  <script src="assets/js/mac.js?v=8"></script>
-  <script src="assets/js/blog.js?v=8"></script>
+  <script src="assets/js/mac.js?v=9"></script>
+  <script src="assets/js/blog.js?v=9"></script>
+  <script src="assets/js/terminal.js?v=9"></script>
   <script>
     // Typing tagline
     (function () {
