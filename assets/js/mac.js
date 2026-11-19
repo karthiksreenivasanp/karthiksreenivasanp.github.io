@@ -43,7 +43,6 @@
     });
   }
   if (!root.getAttribute('data-theme')) root.setAttribute('data-theme', store.get('theme') === 'light' ? 'light' : 'dark');
-  if (window.chrome && CSS.supports('backdrop-filter', 'blur(1px)')) root.classList.add('refract');
 
   /* ---------------- Page chrome (wallpaper, svg filter) ---------------- */
   function injectChrome() {
