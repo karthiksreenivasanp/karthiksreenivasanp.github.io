@@ -19,6 +19,7 @@
     paper: 'https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Geofenced%20Voice%20Biometric%20Attendance'
   };
   const PROJECTS = [
+    { id: 'robo-duck-image', name: 'RoboDuck', desc: 'Android app that sends photos between phones as R2-D2 style chirps, decoded live.', url: 'https://github.com/karthiksreenivasanp/robo-duck-image' },
     { id: 'martian-map', name: 'Martian Map', desc: 'Turn-by-turn walk planner and 3D HUD for astronauts on Mars (NASA Space Apps 2026).', url: 'https://karthiksreenivasanp.github.io/martian-map/' },
     { id: 'speaker-based-attendance', name: 'Speaker Based Attendance', desc: 'Voice biometric attendance with a 20 m geofence. Published at IEEE.', url: 'https://github.com/karthiksreenivasanp/speaker-based-attendance' },
     { id: 'homo-lang', name: 'HOMO Language', desc: 'Plain-English programming language with built-in ML and a self-fixing compiler.', url: 'https://github.com/karthiksreenivasanp/homo-lang' }
